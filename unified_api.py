@@ -22,7 +22,8 @@ ANNOTATIONS_DIR = "annotations"
 MODEL_PATHS = {
     "plant_disease": os.path.join(MODELS_DIR, "plant_disease_classifier_cnn.keras"),
     "paddy_disease": os.path.join(MODELS_DIR, "paddy_diseases_classifier_cnn.keras"),
-    "pest": os.path.join(MODELS_DIR, "pest_classifier_effnetB3.keras")
+    "pest": os.path.join(MODELS_DIR, "pest_classifier_effnetB3.keras"),
+    "router": os.path.join(MODELS_DIR, "router_classifier_best.keras")
 }
 
 ANNOTATION_PATHS = {
@@ -419,36 +420,40 @@ async def predict_pest(file: UploadFile = File(...)) -> Dict[str, Any]:
 @app.post("/predict/unified")
 async def predict_unified(file: UploadFile = File(...)) -> Dict[str, Any]:
     """
-    Unified prediction endpoint using router classifier (PLACEHOLDER)
-    
-    This endpoint will automatically determine which specialized model to use
-    based on the input image. Currently returns a placeholder response.
+    Unified prediction endpoint using router classifier
+    Automatically determines which specialized model to use
     """
     try:
-        # PLACEHOLDER IMPLEMENTATION
-        # TODO: Implement actual router classifier when model is ready
-        
         image_bytes = await file.read()
-        
-        # For now, we'll simulate router decision by trying plant disease first
-        # In actual implementation, router model will decide which endpoint to use
-        
-        # Simulate router prediction
-        router_decision = {
-            "router_prediction": "plant_disease_classifier",  # Simulated
-            "router_confidence": 0.85,  # Simulated
-            "available_classifiers": class_names.get("router", [])
-        }
-        
-        # Make prediction using the "routed" model
-        result = make_prediction("plant_disease", image_bytes)
-        
+        # Predict with router classifier
+        if models.get("router") is None:
+            raise HTTPException(status_code=503, detail="Router classifier model is not available.")
+        img = preprocess_image(image_bytes)
+        router_pred = models["router"].predict(img, verbose=0)[0]
+        router_idx = int(np.argmax(router_pred))
+        router_conf = float(router_pred[router_idx])
+        router_classes = class_names.get("router", ["plant_disease", "paddy_disease", "pest"])
+        routed_model_key = None
+        # Map router class to model key
+        if router_classes[router_idx].lower().startswith("plant"):
+            routed_model_key = "plant_disease"
+        elif router_classes[router_idx].lower().startswith("paddy"):
+            routed_model_key = "paddy_disease"
+        elif router_classes[router_idx].lower().startswith("pest"):
+            routed_model_key = "pest"
+        else:
+            raise HTTPException(status_code=500, detail="Router classifier returned unknown class.")
+        # Predict with routed model
+        result = make_prediction(routed_model_key, image_bytes)
         return {
             "filename": file.filename,
             "endpoint": "unified",
             "description": "Unified classification with automatic model routing",
-            "router_info": router_decision,
-            "note": "This is a placeholder implementation. Router classifier model needed for full functionality.",
+            "router_info": {
+                "router_prediction": router_classes[router_idx],
+                "router_confidence": router_conf,
+                "available_classifiers": router_classes
+            },
             **result
         }
     except Exception as e:

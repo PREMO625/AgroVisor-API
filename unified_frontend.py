@@ -37,6 +37,7 @@ st.markdown("""
         border-radius: 0.5rem;
         border-left: 4px solid #4682B4;
         margin: 1rem 0;
+        color: #222 !important;
     }
     .success-box {
         background-color: #f0fff0;
@@ -44,6 +45,7 @@ st.markdown("""
         border-radius: 0.5rem;
         border-left: 4px solid #32cd32;
         margin: 1rem 0;
+        color: #222 !important;
     }
     .warning-box {
         background-color: #fff8dc;
@@ -51,8 +53,12 @@ st.markdown("""
         border-radius: 0.5rem;
         border-left: 4px solid #ffa500;
         margin: 1rem 0;
+        color: #222 !important;
     }
-    
+    /* Make all text in the main area and sidebar dark */
+    .stApp, .stMarkdown, .stText, .stSelectbox, .stRadio, .stFileUploader, .stSidebar, .st-bb, .st-c3, .st-c4, .st-c5, .st-c6, .st-c7, .st-c8, .st-c9, .st-ca, .st-cb, .st-cc, .st-cd, .st-ce, .st-cf, .st-cg, .st-ch, .st-ci, .st-cj, .st-ck, .st-cl, .st-cm, .st-cn, .st-co, .st-cp, .st-cq, .st-cr, .st-cs, .st-ct, .st-cu, .st-cv, .st-cw, .st-cx, .st-cy, .st-cz {
+        color: #222 !important;
+    }
     /* Fix button text visibility - make text black */
     .stButton > button {
         color: #000000 !important;
@@ -62,28 +68,32 @@ st.markdown("""
         font-weight: bold;
         transition: all 0.3s ease;
     }
-    
     .stButton > button:hover {
         background-color: #4CAF50;
         color: #ffffff !important;
         border-color: #45a049;
     }
-    
     .stButton > button:focus {
         color: #000000 !important;
         background-color: #ffffff;
         border-color: #4CAF50;
         box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
     }
-    
     /* Ensure file uploader text is visible */
     .stFileUploader label {
         color: #000000 !important;
     }
-    
     /* Make sure all text in widgets is visible */
-    .stSelectbox label, .stRadio label {
-        color: #000000 !important;
+    .stSelectbox label, .stRadio label, .stTextInput label, .stTextArea label, .stNumberInput label, .stSlider label, .stCheckbox label, .stSidebar label {
+        color: #222 !important;
+    }
+    /* Sidebar text color */
+    section[data-testid="stSidebar"] * {
+        color: #222 !important;
+    }
+    /* General fix for any white text */
+    * {
+        text-shadow: none !important;
     }
 </style>
 """, unsafe_allow_html=True)
