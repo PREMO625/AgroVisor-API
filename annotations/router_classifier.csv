@@ -1,0 +1,4 @@
+class_index,class_name
+0,plant_disease_classifier
+1,paddy_disease_classifier
+2,pest_classifier
