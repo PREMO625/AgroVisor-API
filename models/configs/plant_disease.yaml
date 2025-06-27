@@ -1,0 +1,5 @@
+module: models.plant_disease_model
+class: PlantDiseaseModel
+params:
+  model_path: Models/plant_disease_classifier_cnn.keras
+  annotation_path: annotations/plant_disease_classifier.csv

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Notebooks/
+Other models and notebooks to analyse/
+Project Report.docx
+*.ipynb
+.vscode/

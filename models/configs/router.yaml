@@ -1,0 +1,5 @@
+module: models.router_model
+class: RouterModel
+params:
+  model_path: Models/router_classifier_best.keras
+  annotation_path: annotations/router_classifier.csv

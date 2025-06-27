@@ -1,0 +1,5 @@
+module: models.pest_model
+class: PestModel
+params:
+  model_path: Models/pest_classifier_effnetB3.keras
+  annotation_path: annotations/pest_classifier.csv

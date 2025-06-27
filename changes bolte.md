@@ -31,27 +31,82 @@
 - Check the end-to-end flow: ensure images are processed, routed, and results are displayed properly through the unified interface.
 
 ### Status
-- [ ] Streamlit app and all API endpoints tested and verified (pending user approval)
+- [x] Phase 2: Streamlit App & Endpoint Integration Testing
+    - [x] Manual testing checklist completed
+    - [x] All endpoints and UI/UX verified functional
+    - [x] All frontend text visibility issues fixed (CSS improved)
+    - [x] Marked as done
 
 ---
 
 ## Phase 3: Modular, Scalable, and Efficient API Backend for Hugging Face Spaces
 
 ### Task Description
-- Design and implement the backend API to be modular, maintainable, and scalable, with a focus on efficient operation on Hugging Face Spaces (free tier).
-- Organize the codebase into multiple files/modules for clarity and maintainability (avoid a single monolithic script).
-- Ensure a plug-and-play architecture: models can be swapped in/out easily by changing a path or config, without major code changes.
+- Refactor the backend into a modular, maintainable, and scalable FastAPI project, optimized for Hugging Face Spaces (free tier) and Docker deployment.
+- Organize the codebase into multiple folders/modules for clarity and maintainability (avoid a single monolithic script).
+- Ensure plug-and-play architecture: models can be swapped in/out easily by editing config files in `models/configs/`.
 - Implement lazy loading: only load a model into memory when it is actually requested.
-- Add a caching mechanism for loaded models, with auto-eviction (unload models not used for a while).
-- Build a queuing system for incoming requests, with a limit on the number of models loaded at once (e.g., only 2 models in memory simultaneously).
-- Ensure thread safety and handle race conditions as needed for multi-user and concurrent requests.
+- Add a caching mechanism for loaded models, with LRU (Least Recently Used) auto-eviction (max 2 models in memory).
+- Build a queuing system for incoming requests, with a limit on the number of models loaded at once.
+- Ensure thread safety and handle race conditions for multi-user and concurrent requests.
 - Optimize the API for resource constraints and multi-user scenarios typical of Hugging Face Spaces.
+- Use Docker for deployment, with a `Dockerfile` that sets the entrypoint to run the API with Uvicorn.
+
+#### Folder Structure
+```
+AgroVisor-API/
+│
+├── api/
+│   ├── __init__.py
+│   ├── main.py                # FastAPI app entrypoint (app instance here)
+│   └── endpoints/
+│       ├── __init__.py
+│       ├── plant_disease.py
+│       ├── paddy_disease.py
+│       ├── pest.py
+│       └── unified.py
+│
+├── models/
+│   ├── __init__.py
+│   ├── base.py                # Base model interface/abstract class
+│   ├── loader.py              # Plug-and-play loader, lazy loading logic
+│   ├── cache.py               # LRU cache with auto-eviction
+│   └── configs/
+│       ├── plant_disease.yaml
+│       ├── paddy_disease.yaml
+│       ├── pest.yaml
+│       └── router.yaml
+│
+├── queue/
+│   ├── __init__.py
+│   └── queue_manager.py       # Request queueing, concurrency, thread safety
+│
+├── utils/
+│   ├── __init__.py
+│   ├── logger.py
+│   └── helpers.py
+│
+├── Models/                    # Model files (as before)
+├── annotations/               # Annotation files (as before)
+├── requirements.txt
+├── Dockerfile
+├── .dockerignore
+├── README.md
+└── rightnow.md
+```
+
+#### Details
+- `models/` handles all model logic: loading, inference, config, caching, and lazy loading.
+- `utils/` contains logging and helper utilities used across the project.
+- Lazy loading and LRU caching are implemented in `models/loader.py` and `models/cache.py`.
+- Only 2 models are kept in memory at once; others are loaded/unloaded as needed.
+- Dockerfile sets the entrypoint to `uvicorn api.main:app --host 0.0.0.0 --port 7860` for Hugging Face Spaces compatibility.
 
 #### Subtasks
-- [ ] Design modular API structure (folders, files, configs)
-- [ ] Implement plug-and-play model loading
+- [ ] Refactor codebase into modular structure (folders, files, configs)
+- [ ] Implement plug-and-play model loading via configs
 - [ ] Add lazy loading for models
-- [ ] Implement model caching with auto-eviction
+- [ ] Implement model caching with LRU auto-eviction
 - [ ] Build request queuing system with queue/model limits
 - [ ] Ensure thread safety and handle race conditions
 - [ ] Optimize for Hugging Face Spaces (resource usage, multi-user)
