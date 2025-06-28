@@ -8,3 +8,4 @@ pillow
 pandas
 streamlit
 requests
+pyyaml

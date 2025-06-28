@@ -4,7 +4,7 @@ from PIL import Image
 import io
 import time
 
-API_BASE_URL = "http://localhost:7860"
+API_BASE_URL = "https://premo625-agrivisor-api.hf.space"
 
 st.set_page_config(page_title="AgroVisor AI System", page_icon="🌱", layout="wide")
 
