@@ -4,6 +4,7 @@ import numpy as np
 from models.base import BaseModel
 from PIL import Image
 import io
+from keras import backend as K
 
 class PestModel(BaseModel):
     def __init__(self, model_path, annotation_path):
@@ -12,8 +13,19 @@ class PestModel(BaseModel):
         self.model = None
         self.class_names = []
 
+    def focal_loss(self, gamma=2.0, alpha=0.25):
+        def focal_loss_fixed(y_true, y_pred):
+            y_pred = tf.clip_by_value(y_pred, K.epsilon(), 1. - K.epsilon())
+            cross_entropy = -y_true * tf.math.log(y_pred)
+            loss = alpha * tf.pow(1 - y_pred, gamma) * cross_entropy
+            return tf.reduce_sum(loss, axis=1)
+        return focal_loss_fixed
+
     def load(self):
-        self.model = tf.keras.models.load_model(self.model_path)
+        self.model = tf.keras.models.load_model(
+            self.model_path,
+            custom_objects={'focal_loss_fixed': self.focal_loss(gamma=2.0, alpha=0.25)}
+        )
         df = pd.read_csv(self.annotation_path)
         self.class_names = df['class_name'].tolist()
 

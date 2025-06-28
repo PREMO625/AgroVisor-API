@@ -1,5 +1,5 @@
 module: models.paddy_disease_model
 class: PaddyDiseaseModel
 params:
-  model_path: Models/paddy_diseases_classifier_cnn.keras
+  model_path: "Models here/paddy_diseases_classifier_cnn.keras"
   annotation_path: annotations/paddy_disease_classifier.csv
