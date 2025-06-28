@@ -1,47 +1,22 @@
-# Agricultural AI System
+# Agricultural AI System (AgroVisor)
 
-A comprehensive AI-powered system for plant disease detection, paddy disease classification, and pest identification.
+A comprehensive AI-powered system for plant disease detection, paddy disease classification, and pest identification. Now available as a live web app and public API!
 
 ## 🌟 Features
 
 - **Plant Disease Detection**: Identify diseases in 38 different plant classes
 - **Paddy Disease Classification**: Specialized classification for 13 rice/paddy diseases
 - **Pest Identification**: Recognize 102 different agricultural pest types
-- **Unified Interface**: Smart routing system (placeholder implementation)
-- **Web API**: RESTful API with comprehensive documentation
-- **Frontend Application**: User-friendly Streamlit interface
+- **Unified Interface**: Smart routing system (auto-selects the right model)
+- **Web API**: RESTful API with modular, scalable backend (FastAPI)
+- **Frontend Application**: Modern, user-friendly web app (deployed on Vercel)
+- **Production-Ready Deployments**: Public API on Hugging Face Spaces, frontend on Vercel
 
-## 🚀 Quick Start
+## 🚀 Live Demo & Public API
 
-### Option 1: One-Click Start (Windows)
-```bash
-# Double-click the batch file
-start_system.bat
-```
-
-### Option 2: Python Script
-```bash
-python run_system.py
-```
-
-### Option 3: Manual Start
-
-1. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Start API Server**
-   ```bash
-   python unified_api.py
-   # or
-   uvicorn unified_api:app --host 0.0.0.0 --port 8000 --reload
-   ```
-
-3. **Start Frontend (in another terminal)**
-   ```bash
-   streamlit run unified_frontend.py
-   ```
+- **Web App (Frontend):** [https://agrovisor.vercel.app/](https://agrovisor.vercel.app/)
+- **API (Hugging Face Spaces):** [https://huggingface.co/spaces/premo625/AgriVisor-API](https://huggingface.co/spaces/premo625/AgriVisor-API)
+  - Direct API base: [https://premo625-agrivisor-api.hf.space](https://premo625-agrivisor-api.hf.space)
 
 ## 📋 System Requirements
 
@@ -51,47 +26,46 @@ python run_system.py
 - Required model files in `Models/` directory
 - Annotation files in `annotations/` directory
 
-## 🔗 Access URLs
-
-After starting the system:
-
-- **Frontend Application**: http://localhost:8501
-- **API Documentation**: http://localhost:8000/docs
-- **API Health Check**: http://localhost:8000/health
-- **Model Information**: http://localhost:8000/models/info
-
 ## 📁 Project Structure
 
 ```
-Backend/
-├── unified_api.py              # Main API server
-├── unified_frontend.py         # Streamlit frontend
-├── run_system.py              # System launcher
-├── start_system.bat           # Windows batch launcher
-├── requirements.txt           # Python dependencies
-├── api.md                     # API documentation
-├── README.md                  # This file
-├── Models/                    # Model files
-│   ├── plant_disease_classifier_cnn.keras
-│   ├── paddy_diseases_classifier_cnn.keras
-│   └── pest_classifier_effnetB3.keras
-└── annotations/               # Class label files
-    ├── plant_disease_classifier.csv
-    ├── paddy_disease_classifier.csv
-    ├── pest_classifier.csv
-    └── router_classifier.csv
+AgroVisor-API/
+├── api/                  # FastAPI backend (modular endpoints)
+│   ├── main.py
+│   └── endpoints/
+├── models/               # Model loading, configs, cache
+│   ├── loader.py
+│   ├── cache.py
+│   └── configs/
+├── utils/                # Logging, helpers
+├── request_queue/        # Request queueing, concurrency
+├── Models/               # Model files (.keras)
+├── annotations/          # Class label files (.csv)
+├── frontend_app.py       # (Legacy) Streamlit frontend
+├── requirements.txt
+├── Dockerfile
+├── README.md
+└── ...
 ```
+
+## 🔗 Access URLs
+
+- **Live Web App:** [https://agrovisor.vercel.app/](https://agrovisor.vercel.app/)
+- **API (Hugging Face):** [https://huggingface.co/spaces/premo625/AgriVisor-API](https://huggingface.co/spaces/premo625/AgriVisor-API)
+- **Direct API Base:** [https://premo625-agrivisor-api.hf.space](https://premo625-agrivisor-api.hf.space)
+- **API Docs:** [https://premo625-agrivisor-api.hf.space/docs](https://premo625-agrivisor-api.hf.space/docs)
+- **API Health:** [https://premo625-agrivisor-api.hf.space/health](https://premo625-agrivisor-api.hf.space/health)
 
 ## 🔌 API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/predict/plant-disease` | POST | Plant disease detection |
-| `/predict/paddy-disease` | POST | Paddy disease classification |
-| `/predict/pest` | POST | Pest identification |
-| `/predict/unified` | POST | Unified classification (placeholder) |
-| `/health` | GET | System health check |
-| `/models/info` | GET | Model information |
+| Endpoint                  | Method | Description                        |
+|--------------------------|--------|------------------------------------|
+| `/predict/plant-disease` | POST   | Plant disease detection            |
+| `/predict/paddy-disease` | POST   | Paddy disease classification       |
+| `/predict/pest`          | POST   | Pest identification                |
+| `/predict/unified`       | POST   | Unified classification (auto-route)|
+| `/health`                | GET    | System health check                |
+| `/models/info`           | GET    | Model information                  |
 
 ## 📊 Model Information
 
@@ -101,7 +75,7 @@ Backend/
 - **Input**: 224x224 RGB images
 
 ### Paddy Disease Classifier
-- **Architecture**: CNN  
+- **Architecture**: CNN
 - **Classes**: 13 (Rice-specific diseases)
 - **Input**: 224x224 RGB images
 
@@ -112,112 +86,54 @@ Backend/
 
 ## 🎯 Usage Examples
 
-### Frontend Usage
-1. Open http://localhost:8501
-2. Select the appropriate interface
-3. Upload an image
-4. Click predict to get results
-
-### API Usage (cURL)
-```bash
-# Plant disease detection
-curl -X POST "http://localhost:8000/predict/plant-disease" \
-     -H "Content-Type: multipart/form-data" \
-     -F "file=@plant_image.jpg"
-
-# Pest identification
-curl -X POST "http://localhost:8000/predict/pest" \
-     -H "Content-Type: multipart/form-data" \
-     -F "file=@pest_image.jpg"
-```
+### Web App (Recommended)
+1. Go to [https://agrovisor.vercel.app/](https://agrovisor.vercel.app/)
+2. Select the task (Unified, Plant, Paddy, Pest)
+3. Upload an image and get instant results
 
 ### API Usage (Python)
 ```python
 import requests
 
-# Make prediction
-with open('plant_image.jpg', 'rb') as f:
-    files = {'file': f}
-    response = requests.post(
-        'http://localhost:8000/predict/plant-disease', 
-        files=files
-    )
-    result = response.json()
-    print(f"Prediction: {result['prediction']['class_name']}")
+url = "https://premo625-agrivisor-api.hf.space/predict/unified"
+files = {"file": open("your_image.jpg", "rb")}
+response = requests.post(url, files=files)
+print(response.json())
+```
+
+### API Usage (cURL)
+```bash
+curl -X POST "https://premo625-agrivisor-api.hf.space/predict/plant-disease" \
+     -H "Content-Type: multipart/form-data" \
+     -F "file=@plant_image.jpg"
 ```
 
 ## 🔧 Configuration
 
-### Environment Variables
-- `PORT`: API server port (default: 8000)
-
-### Model Paths
-Models are expected in the `Models/` directory:
-- `plant_disease_classifier_cnn.keras`
-- `paddy_diseases_classifier_cnn.keras`
-- `pest_classifier_effnetB3.keras`
-
-### Annotation Files
-Class labels are loaded from `annotations/` directory:
-- `plant_disease_classifier.csv`
-- `paddy_disease_classifier.csv`
-- `pest_classifier.csv`
-- `router_classifier.csv`
+- **Model files:** Place in `Models/`
+- **Annotation files:** Place in `annotations/`
+- **Environment:**
+  - `PORT` (optional): API server port (default: 7860 on Hugging Face)
 
 ## 🚧 Development Status
 
-### ✅ Completed
-- Plant disease detection API and frontend
-- Paddy disease classification API and frontend
-- Pest identification API and frontend
-- Comprehensive API documentation
-- System launcher and setup scripts
-
-### 🚧 In Progress
-- Router classifier model (placeholder implementation)
-- Unified interface (waiting for router model)
-
-### 📋 TODO
-- Train and integrate router classifier model
-- Add batch prediction endpoints
-- Implement user authentication
-- Add prediction history
-- Performance optimization
+- ✅ All endpoints and unified interface implemented
+- ✅ Modular, scalable backend (FastAPI)
+- ✅ Lazy loading, LRU cache, request queueing
+- ✅ Hugging Face Spaces deployment (API)
+- ✅ Vercel deployment (web app)
+- 🚧 Router classifier model (improving)
+- 🚧 Batch prediction, user auth, history (planned)
 
 ## 🛠️ Troubleshooting
 
-### Common Issues
-
-1. **Models not loading**
-   - Check if model files exist in `Models/` directory
-   - Verify file permissions
-   - Check available RAM (models require ~2GB each)
-
-2. **API not starting**
-   - Ensure port 8000 is not in use
-   - Check if all dependencies are installed
-   - Verify Python version (3.8+)
-
-3. **Frontend connection issues**
-   - Ensure API server is running first
-   - Check if port 8501 is available
-   - Verify API URL in frontend code
-
-4. **Prediction errors**
-   - Check image format (JPG, PNG supported)
-   - Verify image is not corrupted
-   - Ensure image contains relevant content
-
-### Getting Help
-
-1. Check the API health endpoint: http://localhost:8000/health
-2. Review server logs for error messages
-3. Verify all required files are present
-4. Check the API documentation: http://localhost:8000/docs
-
-## 📄 License
-
-This project is part of an Agricultural Technology Hackathon.
+- **API not responding?**
+  - Check [API health](https://premo625-agrivisor-api.hf.space/health)
+  - If using free tier, wait and retry (resource limits)
+- **Model not loading?**
+  - Ensure model files are present in `Models/`
+- **Frontend not working?**
+  - Make sure API is up and reachable from the web app
 
 ## 🤝 Contributing
 
@@ -227,12 +143,12 @@ This project is part of an Agricultural Technology Hackathon.
 4. Test thoroughly
 5. Submit a pull request
 
-## 📞 Support
+## 📄 License
 
-For technical support or questions about the API integration, refer to the comprehensive API documentation in `api.md`.
+This project is part of an Agricultural Technology Hackathon.
 
 ---
 
-**Version**: 2.0.0  
-**Last Updated**: 2024  
-**Built with**: FastAPI, Streamlit, TensorFlow
+**Version**: 2.1.0  
+**Last Updated**: June 2025  
+**Built with**: FastAPI, Streamlit, TensorFlow, Vercel, Hugging Face Spaces
