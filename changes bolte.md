@@ -103,17 +103,17 @@ AgroVisor-API/
 - Dockerfile sets the entrypoint to `uvicorn api.main:app --host 0.0.0.0 --port 7860` for Hugging Face Spaces compatibility.
 
 #### Subtasks
-- [ ] Refactor codebase into modular structure (folders, files, configs)
-- [ ] Implement plug-and-play model loading via configs
-- [ ] Add lazy loading for models
-- [ ] Implement model caching with LRU auto-eviction
-- [ ] Build request queuing system with queue/model limits
-- [ ] Ensure thread safety and handle race conditions
-- [ ] Optimize for Hugging Face Spaces (resource usage, multi-user)
-- [ ] Test and document the API backend
+- [x] Refactor codebase into modular structure (folders, files, configs)
+- [x] Implement plug-and-play model loading via configs
+- [x] Add lazy loading for models
+- [x] Implement model caching with LRU auto-eviction
+- [x] Build request queuing system with queue/model limits
+- [x] Ensure thread safety and handle race conditions
+- [x] Optimize for Hugging Face Spaces (resource usage, multi-user)
+- [x] Test and document the API backend
 
 ### Status
-- [ ] Modular, scalable, and efficient API backend implemented and optimized for Hugging Face Spaces (pending user approval)
+- [x] Modular, scalable, and efficient API backend implemented and optimized for Hugging Face Spaces (done)
 
 ---
 
@@ -126,7 +126,7 @@ AgroVisor-API/
 - Identify and fix any issues that arise from the new backend architecture.
 
 ### Status
-- [ ] Final Streamlit app and API integration tested and verified (pending user approval)
+- [x] Final Streamlit app and API integration tested and verified (done)
 
 ---
 
