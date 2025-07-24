@@ -16,7 +16,6 @@ A comprehensive AI-powered system for plant disease detection, paddy disease cla
 
 - **Web App (Frontend):** [https://agrovisor.vercel.app/](https://agrovisor.vercel.app/)
 - **API (Hugging Face Spaces):** [https://huggingface.co/spaces/premo625/AgriVisor-API](https://huggingface.co/spaces/premo625/AgriVisor-API)
-  - Direct API base: [https://premo625-agrivisor-api.hf.space](https://premo625-agrivisor-api.hf.space)
 
 ## 📋 System Requirements
 
@@ -52,9 +51,6 @@ AgroVisor-API/
 
 - **Live Web App:** [https://agrovisor.vercel.app/](https://agrovisor.vercel.app/)
 - **API (Hugging Face):** [https://huggingface.co/spaces/premo625/AgriVisor-API](https://huggingface.co/spaces/premo625/AgriVisor-API)
-- **Direct API Base:** [https://premo625-agrivisor-api.hf.space](https://premo625-agrivisor-api.hf.space)
-- **API Docs:** [https://premo625-agrivisor-api.hf.space/docs](https://premo625-agrivisor-api.hf.space/docs)
-- **API Health:** [https://premo625-agrivisor-api.hf.space/health](https://premo625-agrivisor-api.hf.space/health)
 
 ## 🔌 API Endpoints
 
